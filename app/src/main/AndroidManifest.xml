@@ -12,7 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project1">
         <activity
-            android:name=".loginPage"
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
