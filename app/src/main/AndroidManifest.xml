@@ -11,23 +11,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project1">
+
+        <!-- Profile screen (opened after login) -->
         <activity
             android:name=".ProfileActivity"
             android:exported="false" />
+
+        <!-- Login screen – FIRST screen (launcher) -->
         <activity
             android:name=".LoginPage"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Project1">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!-- Main screen (opened after login if needed) -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.Project1" />
+
     </application>
 
 </manifest>
