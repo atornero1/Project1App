@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project1">
 
+        <!-- Create Account screen -->
+        <activity
+            android:name=".CreateAccountPage"
+            android:exported="false" />
+
         <!-- Profile screen (opened after login) -->
         <activity
             android:name=".ProfileActivity"
