@@ -38,6 +38,7 @@ class CreateAccountPage : ComponentActivity() {
     }
 }
 
+// This composable function holds all the UI elements for the create account screen.
 @Composable
 private fun CreateAccountScreen() {
     val context = LocalContext.current
@@ -53,6 +54,7 @@ private fun CreateAccountScreen() {
     ) {
         Spacer(Modifier.height(48.dp))
 
+        // A simple text element for the title.
         Text(
             text = "Create an Account",
             style = MaterialTheme.typography.headlineMedium,
@@ -61,9 +63,10 @@ private fun CreateAccountScreen() {
 
         Spacer(Modifier.height(28.dp))
 
+        // An input field for the username.
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
+            value = username, // The text to display
+            onValueChange = { username = it }, // Update the state when the user types
             label = { Text("Username") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
@@ -71,17 +74,20 @@ private fun CreateAccountScreen() {
 
         Spacer(Modifier.height(12.dp))
 
+        // An input field for the password.
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Password") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
+            // This hides the text, showing dots instead.
             visualTransformation = PasswordVisualTransformation()
         )
 
         Spacer(Modifier.height(12.dp))
 
+        // An input field for confirming the password.
         OutlinedTextField(
             value = confirmPassword,
             onValueChange = { confirmPassword = it },
@@ -93,19 +99,23 @@ private fun CreateAccountScreen() {
 
         Spacer(Modifier.height(28.dp))
 
+        // The main button for creating the account.
         Button(
             onClick = {
                 if (password != confirmPassword) {
+                    // Show a pop-up message if passwords don't match.
                     Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 } else if (username.isBlank() || password.isBlank()) {
+                    // Show a message if any field is empty.
                     Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
                 } else {
-                    // This is where we'll the user to the database
+                    // This is where we'll add the user to the database
                     Toast.makeText(context, "Account created!", Toast.LENGTH_SHORT).show()
 
-                    // Go back to login page
+                    // Create an Intent to navigate back to the LoginPage.
                     val intent = Intent(context, LoginPage::class.java)
                     context.startActivity(intent)
+                    // Finish this activity so the user can't go back to it with the back button.
                     (context as? Activity)?.finish()
                 }
             },
@@ -118,6 +128,7 @@ private fun CreateAccountScreen() {
 
         Spacer(Modifier.height(12.dp))
 
+        // The secondary button to go back.
         Button(
             onClick = {
                 // Go back to login page
