@@ -46,9 +46,8 @@ class MainActivity : ComponentActivity() {
                                 currentScreen = "saved"
                             },
                             onGoProfile = {
-                                startActivity(
-                                    Intent(this@MainActivity, ProfileActivity::class.java)
-                                )
+
+                                currentScreen = "profile"
                             },
                             onLogout = {
                                 // TODO: Add real logout code later (database/auth)
@@ -72,7 +71,10 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "profile" -> {
-                        SimpleScreenText("Profile Info Page (Coming Soon)")
+                        ProfileScreen(
+                            onChangeUsername = {},
+                            onChangePassword = {}
+                        )
                     }
                 }
             }

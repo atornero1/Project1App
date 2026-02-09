@@ -1,8 +1,9 @@
 package com.example.project1
 
+
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,31 +22,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.project1.ui.theme.Project1Theme
-
-class ProfileActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            Project1Theme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    ProfileScreen(
-                        // Will change username and password in database once setup
-                        onChangeUsername = {},
-                        onChangePassword = {}
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
-private fun ProfileScreen(
+fun ProfileScreen(
     onChangeUsername: () -> Unit,
     onChangePassword: () -> Unit
 ) {
@@ -61,7 +42,7 @@ private fun ProfileScreen(
     ) {
         // Welcome text for specific user
         Text(
-            text = "Hi, ",
+            text = "Hi, username",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
