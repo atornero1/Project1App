@@ -6,13 +6,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,6 +36,9 @@ class ProfileActivity : AppCompatActivity() {
 
         @Composable
         fun ProfileScreen() {
+            var username by remember { mutableStateOf("") }
+            var password by remember { mutableStateOf("") }
+            var newPassword by remember { mutableStateOf("")}
             Column(
                 modifier = Modifier.fillMaxSize().padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -43,6 +49,56 @@ class ProfileActivity : AppCompatActivity() {
                     text = "Hi, ",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
+                )
+                // Text to indicate change username section
+                Text(
+                    text = "Change Username",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                // Text input for new username
+                OutlinedTextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("New Username") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                // Text input for password to change username
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Password") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                // Text to indicate change password section
+                Text(
+                    text = "Change Password",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                // Text input for old password to change password
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Old Password") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                // Text input for new password to change password
+                OutlinedTextField(
+                    value = newPassword,
+                    onValueChange = { password = it },
+                    label = { Text("New Password") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                // Text input for new password to change password
+                OutlinedTextField(
+                    value = newPassword,
+                    onValueChange = { password = it },
+                    label = { Text("Re-enter New Password") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }
