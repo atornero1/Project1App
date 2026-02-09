@@ -11,7 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.project1.ui.theme.HomePage
+import com.example.project1.HomePage
 import com.example.project1.ui.theme.Project1Theme
 
 /**
@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                                 currentScreen = "saved"
                             },
                             onGoProfile = {
-                                // TODO: Replace with Profile Info screen later
+
                                 currentScreen = "profile"
                             },
                             onLogout = {
@@ -71,7 +71,10 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "profile" -> {
-                        SimpleScreenText("Profile Info Page (Coming Soon)")
+                        ProfileScreen(
+                            onChangeUsername = {},
+                            onChangePassword = {}
+                        )
                     }
                 }
             }
