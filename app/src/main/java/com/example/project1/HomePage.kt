@@ -1,4 +1,4 @@
-package com.example.project1.ui.theme
+package com.example.project1
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -67,7 +67,7 @@ fun HomePage(
 @Preview(showBackground = true)
 @Composable
 fun HomePagePreview() {
-    Project1Theme {
+    _root_ide_package_.com.example.project1.ui.theme.Project1Theme {
         HomePage(
             onGoGenerate = {},
             onGoSaved = {},
