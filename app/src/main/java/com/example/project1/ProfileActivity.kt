@@ -34,6 +34,7 @@ class ProfileActivity : AppCompatActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     ProfileScreen(
+                        // Will change username and password in database once setup
                         onChangeUsername = {},
                         onChangePassword = {}
                     )
@@ -49,8 +50,10 @@ private fun ProfileScreen(
     onChangePassword: () -> Unit
 ) {
     var username by remember { mutableStateOf("") } // Input for username
-    var password by remember { mutableStateOf("") } // Input for password
-    var newPassword by remember { mutableStateOf("") } // Input for new password
+    var passwordForUsername by remember { mutableStateOf("") } // Input for password un change
+    var oldPassword by remember { mutableStateOf("") } // Input for old password
+    var newPassword1 by remember { mutableStateOf("") } // Input 1 for new password
+    var newPassword2 by remember { mutableStateOf("") } // Input 2 for new password
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -77,8 +80,8 @@ private fun ProfileScreen(
         )
         // Text input for password to change username
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = passwordForUsername,
+            onValueChange = { passwordForUsername = it },
             label = { Text("Password") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
@@ -95,24 +98,24 @@ private fun ProfileScreen(
         )
         // Text input for old password to change password
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = oldPassword,
+            onValueChange = { oldPassword = it },
             label = { Text("Old Password") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         // Text input for new password to change password
         OutlinedTextField(
-            value = newPassword,
-            onValueChange = { password = it },
+            value = newPassword1,
+            onValueChange = { newPassword1 = it },
             label = { Text("New Password") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         // Text input to re-enter new password to change password
         OutlinedTextField(
-            value = newPassword,
-            onValueChange = { password = it },
+            value = newPassword2,
+            onValueChange = { newPassword2 = it },
             label = { Text("Re-enter New Password") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()

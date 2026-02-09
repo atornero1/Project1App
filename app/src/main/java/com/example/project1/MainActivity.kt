@@ -46,8 +46,9 @@ class MainActivity : ComponentActivity() {
                                 currentScreen = "saved"
                             },
                             onGoProfile = {
-                                // TODO: Replace with Profile Info screen later
-                                currentScreen = "profile"
+                                startActivity(
+                                    Intent(this@MainActivity, ProfileActivity::class.java)
+                                )
                             },
                             onLogout = {
                                 // TODO: Add real logout code later (database/auth)
