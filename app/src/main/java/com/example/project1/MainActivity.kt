@@ -58,10 +58,7 @@ class MainActivity : ComponentActivity() {
                                 currentScreen = "saved"
                             },
                             onGoProfile = {
-                                // Go back to LoginPage activity
-                                startActivity(
-                                    Intent(this@MainActivity, ProfileActivity::class.java)
-                                )
+                                currentScreen = "profile"
                             },
                             onLogout = {
                                 // TODO: Add real logout code later (database/auth)
