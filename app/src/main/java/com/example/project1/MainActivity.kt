@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.example.project1.data.local.AppDatabase
 import com.example.project1.HomePage
+import com.example.project1.ui.theme.GenerateRecipesPage
 import com.example.project1.ui.theme.Project1Theme
 import kotlinx.coroutines.launch
 
@@ -78,8 +79,14 @@ class MainActivity : ComponentActivity() {
 
                     // ---------- PLACEHOLDER SCREENS ----------
                     "generate" -> {
-                        SimpleScreenText("Generate Recipes Page (Coming Soon)")
+                        GenerateRecipesPage(
+                            onBack = { currentScreen = "home" },
+                            apiKey = "6dcaf962a3614a588fbadc15730ab3cd",
+                            modifier = Modifier.fillMaxSize(),
+                            numberOfResults = 15
+                        )
                     }
+
 
                     "saved" -> {
                         SimpleScreenText("Saved Recipes Page (Coming Soon)")
