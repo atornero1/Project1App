@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.project1.HomePage
+import com.example.project1.ui.theme.GenerateRecipesPage
 import com.example.project1.ui.theme.Project1Theme
 
 /**
@@ -63,8 +64,14 @@ class MainActivity : ComponentActivity() {
 
                     // ---------- PLACEHOLDER SCREENS ----------
                     "generate" -> {
-                        SimpleScreenText("Generate Recipes Page (Coming Soon)")
+                        GenerateRecipesPage(
+                            onBack = { currentScreen = "home" },
+                            apiKey = "6dcaf962a3614a588fbadc15730ab3cd",
+                            modifier = Modifier.fillMaxSize(),
+                            numberOfResults = 15
+                        )
                     }
+
 
                     "saved" -> {
                         SimpleScreenText("Saved Recipes Page (Coming Soon)")

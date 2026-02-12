@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- REQUIRED for API calls (Spoonacular) -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,11 +18,6 @@
         <!-- Create Account screen -->
         <activity
             android:name=".CreateAccountPage"
-            android:exported="false" />
-
-        <!-- Profile screen (opened after login) -->
-        <activity
-            android:name=".ProfileActivity"
             android:exported="false" />
 
         <!-- Login screen – FIRST screen (launcher) -->
