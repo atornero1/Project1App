@@ -6,7 +6,14 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
@@ -25,11 +32,28 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import com.example.project1.data.local.AppDatabase
+import com.example.project1.data.local.UserRepository
+import kotlinx.coroutines.launch
 
 class LoginPage : ComponentActivity() {
 
+    private lateinit var userRepository: UserRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Set up the coroutine scope and get instances of the database and repository.
+        val db = AppDatabase.getDatabase(this)
+        val userDao = db.userDao()
+        userRepository = UserRepository(userDao)
+
+        // On first launch, this will create a default "admin" user for testing.
+        // If the user already exists, it will be ignored, making it safe to run every time.
+        lifecycleScope.launch {
+            userRepository.registerUser("admin", "admin")
+        }
 
         setContent {
             val context = LocalContext.current
@@ -38,18 +62,20 @@ class LoginPage : ComponentActivity() {
                 color = MaterialTheme.colorScheme.background
             ) {
                 LoginScreen(
-                    onLogin = { email, password ->
-                        // Basic validation example (replace with API call)
-                        if (email.isBlank() || password.isBlank()) {
-                            Toast.makeText(
-                                this,
-                                "Please enter email and password",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } else {
-                            // Go to MainActivity (or ProfileActivity)
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
+                    onLogin = { username, password ->
+                        lifecycleScope.launch {
+                            val user = userRepository.login(username, password)
+                            if (user != null) {
+                                // Go to MainActivity
+                                startActivity(Intent(this@LoginPage, MainActivity::class.java))
+                                finish()
+                            } else {
+                                Toast.makeText(
+                                    this@LoginPage,
+                                    "Invalid username or password",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     },
                     onCreateAccount = {
@@ -72,7 +98,7 @@ private fun LoginScreen(
     onCreateAccount: () -> Unit,
     onForgotPassword: () -> Unit
 ) {
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
 
@@ -80,9 +106,9 @@ private fun LoginScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(Modifier.height(48.dp))
 
         Text(
             text = "Welcome Back",
@@ -100,9 +126,9 @@ private fun LoginScreen(
         Spacer(Modifier.height(28.dp))
 
         OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Email") },
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
@@ -143,7 +169,7 @@ private fun LoginScreen(
         Spacer(Modifier.height(18.dp))
 
         Button(
-            onClick = { onLogin(email.trim(), password) },
+            onClick = { onLogin(username.trim(), password) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(52.dp),

@@ -1,8 +1,7 @@
 @file:Suppress("unused")
 
-package com.example.project1.ui.theme
+package com.example.project1
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -26,6 +26,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 
 /**
  * A small-scale, minimal-class Spoonacular "what's in my fridge" search screen.
@@ -430,11 +431,11 @@ private fun IngredientSection(title: String, items: List<IngredientDto>) {
  */
 @Composable
 private fun FlowRowCompat(
-    horizontalSpacing: androidx.compose.ui.unit.Dp,
-    verticalSpacing: androidx.compose.ui.unit.Dp,
+    horizontalSpacing: Dp,
+    verticalSpacing: Dp,
     content: @Composable () -> Unit
 ) {
-    androidx.compose.ui.layout.Layout(content = content) { measurables, constraints ->
+    Layout(content = content) { measurables, constraints ->
         val hSpace = horizontalSpacing.roundToPx()
         val vSpace = verticalSpacing.roundToPx()
 
