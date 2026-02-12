@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -122,6 +124,7 @@ private data class UiState(
  * Example usage:
  *   GenerateRecipesPage(apiKey = BuildConfig.SPOONACULAR_API_KEY)
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenerateRecipesPage(
     apiKey: String,
@@ -130,7 +133,6 @@ fun GenerateRecipesPage(
     onBack: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-
     var state by remember { mutableStateOf(UiState()) }
 
     // If a recipe is selected, show a simple detail view.
@@ -145,114 +147,134 @@ fun GenerateRecipesPage(
         return
     }
 
-    Column(modifier.fillMaxSize().padding(16.dp)) {
-        Text("Search recipes by ingredients", style = MaterialTheme.typography.titleLarge)
-
-        // Back button to return to Home
-        Button(onClick = onBack) {
-            Text("Back")
-        }
-
-        Spacer(Modifier.height(12.dp))
-
-        // Ingredient input row
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            OutlinedTextField(
-                value = state.ingredientText,
-                onValueChange = { state = state.copy(ingredientText = it) },
-                modifier = Modifier.weight(1f),
-                label = { Text("Ingredient") },
-                singleLine = true
-            )
-            Spacer(Modifier.width(8.dp))
-            Button(onClick = {
-                val next = state.ingredientText.trim()
-                if (next.isNotBlank()) {
-                    // Keep distinct (case-insensitive) to avoid duplicates like "Eggs" and "eggs"
-                    val updated = (state.ingredients + next)
-                        .distinctBy { it.lowercase() }
-                    state = state.copy(ingredients = updated, ingredientText = "")
-                }
-            }) {
-                Text("Add")
-            }
-        }
-
-        Spacer(Modifier.height(10.dp))
-
-        // Chips (simple AssistChip list) for added ingredients
-        IngredientChipsRow(
-            ingredients = state.ingredients,
-            onRemove = { toRemove ->
-                state = state.copy(ingredients = state.ingredients - toRemove)
-            }
-        )
-
-        Spacer(Modifier.height(10.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Button(
-                enabled = state.ingredients.isNotEmpty() && !state.isLoading,
-                onClick = {
-                    // Start loading
-                    state = state.copy(isLoading = true, error = null, results = emptyList())
-
-                    scope.launch {
-                        runCatching {
-                            val query = state.ingredients.joinToString(",") { it.trim() }
-
-                            // Spoonacular call:
-                            // ranking=1 -> maximize used ingredients first
-                            val list = SpoonacularClient.api.findByIngredients(
-                                ingredientsCommaSeparated = query,
-                                number = numberOfResults,
-                                ranking = 1,
-                                ignorePantry = true,
-                                apiKey = apiKey
-                            )
-
-                            // Extra safety sort:
-                            // Most similar = most used ingredients, then fewest missing ingredients.
-                            list.sortedWith(
-                                compareByDescending<RecipeByIngredientsDto> { it.usedIngredientCount }
-                                    .thenBy { it.missedIngredientCount }
-                            )
-                        }.onSuccess { sorted ->
-                            state = state.copy(isLoading = false, results = sorted)
-                        }.onFailure { e ->
-                            state = state.copy(
-                                isLoading = false,
-                                error = e.message ?: "Search failed (unknown error)"
-                            )
-                        }
+    // Scaffold gives you a proper "top bar" area for Back + Title.
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                // statusBarsPadding helps when you're using enableEdgeToEdge()
+                // so the title isn't jammed into the very top.
+                modifier = Modifier.statusBarsPadding(),
+                title = { Text("Search recipes by ingredients") },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
-            ) {
-                Text(if (state.isLoading) "Searching..." else "Search")
-            }
-
-            Spacer(Modifier.width(12.dp))
-
-            if (state.error != null) {
-                Text(state.error!!, color = MaterialTheme.colorScheme.error)
-            }
+            )
         }
+    ) { innerPadding ->
 
-        Spacer(Modifier.height(14.dp))
+        // Your existing UI content (input, chips, button, results)
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding) // pushes content below TopAppBar
+                .padding(16.dp)
+        ) {
+            Spacer(Modifier.height(8.dp)) // optional: adds a little breathing room
 
-        // Scrollable results list
-        if (!state.isLoading && state.results.isEmpty()) {
-            Text("Add ingredients and press Search to see recipes.")
-        } else {
-            LazyColumn(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(state.results, key = { it.id }) { recipe ->
-                    RecipeCard(
-                        recipe = recipe,
-                        onOpen = { state = state.copy(selectedRecipe = recipe) }
-                    )
+            // Ingredient input row
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                OutlinedTextField(
+                    value = state.ingredientText,
+                    onValueChange = { state = state.copy(ingredientText = it) },
+                    modifier = Modifier.weight(1f),
+                    label = { Text("Ingredient") },
+                    singleLine = true
+                )
+                Spacer(Modifier.width(8.dp))
+                Button(onClick = {
+                    val next = state.ingredientText.trim()
+                    if (next.isNotBlank()) {
+                        // Keep distinct (case-insensitive) to avoid duplicates like "Eggs" and "eggs"
+                        val updated = (state.ingredients + next)
+                            .distinctBy { it.lowercase() }
+                        state = state.copy(ingredients = updated, ingredientText = "")
+                    }
+                }) {
+                    Text("Add")
+                }
+            }
+
+            Spacer(Modifier.height(10.dp))
+
+            // Chips (simple AssistChip list) for added ingredients
+            IngredientChipsRow(
+                ingredients = state.ingredients,
+                onRemove = { toRemove ->
+                    state = state.copy(ingredients = state.ingredients - toRemove)
+                }
+            )
+
+            Spacer(Modifier.height(10.dp))
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Button(
+                    enabled = state.ingredients.isNotEmpty() && !state.isLoading,
+                    onClick = {
+                        // Start loading
+                        state = state.copy(isLoading = true, error = null, results = emptyList())
+
+                        scope.launch {
+                            runCatching {
+                                val query = state.ingredients.joinToString(",") { it.trim() }
+
+                                // Spoonacular call:
+                                // ranking=1 -> maximize used ingredients first
+                                val list = SpoonacularClient.api.findByIngredients(
+                                    ingredientsCommaSeparated = query,
+                                    number = numberOfResults,
+                                    ranking = 1,
+                                    ignorePantry = true,
+                                    apiKey = apiKey
+                                )
+
+                                // Extra safety sort:
+                                // Most similar = most used ingredients, then fewest missing ingredients.
+                                list.sortedWith(
+                                    compareByDescending<RecipeByIngredientsDto> { it.usedIngredientCount }
+                                        .thenBy { it.missedIngredientCount }
+                                )
+                            }.onSuccess { sorted ->
+                                state = state.copy(isLoading = false, results = sorted)
+                            }.onFailure { e ->
+                                state = state.copy(
+                                    isLoading = false,
+                                    error = e.message ?: "Search failed (unknown error)"
+                                )
+                            }
+                        }
+                    }
+                ) {
+                    Text(if (state.isLoading) "Searching..." else "Search")
+                }
+
+                Spacer(Modifier.width(12.dp))
+
+                if (state.error != null) {
+                    Text(state.error!!, color = MaterialTheme.colorScheme.error)
+                }
+            }
+
+            Spacer(Modifier.height(14.dp))
+
+            // Scrollable results list
+            if (!state.isLoading && state.results.isEmpty()) {
+                Text("Add ingredients and press Search to see recipes.")
+            } else {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    items(state.results, key = { it.id }) { recipe ->
+                        RecipeCard(
+                            recipe = recipe,
+                            onOpen = { state = state.copy(selectedRecipe = recipe) }
+                        )
+                    }
                 }
             }
         }
