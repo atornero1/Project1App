@@ -1,5 +1,6 @@
 package com.example.project1
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -18,6 +19,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -30,6 +32,7 @@ class LoginPage : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val context = LocalContext.current
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
@@ -50,7 +53,9 @@ class LoginPage : ComponentActivity() {
                         }
                     },
                     onCreateAccount = {
-                        Toast.makeText(this, "Create account tapped", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(context, CreateAccountPage::class.java)
+                        context.startActivity(intent)
+                        (context as? Activity)?.finish()
                     },
                     onForgotPassword = {
                         Toast.makeText(this, "Forgot password tapped", Toast.LENGTH_SHORT).show()
