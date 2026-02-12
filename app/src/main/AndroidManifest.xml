@@ -20,11 +20,6 @@
             android:name=".CreateAccountPage"
             android:exported="false" />
 
-        <!-- Profile screen (opened after login) -->
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false" />
-
         <!-- Login screen – FIRST screen (launcher) -->
         <activity
             android:name=".LoginPage"
