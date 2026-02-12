@@ -14,8 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.example.project1.data.local.AppDatabase
-import com.example.project1.HomePage
-import com.example.project1.ui.theme.GenerateRecipesPage
 import com.example.project1.ui.theme.Project1Theme
 import kotlinx.coroutines.launch
 
