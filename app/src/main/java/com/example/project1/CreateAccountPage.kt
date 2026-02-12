@@ -6,7 +6,13 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -20,18 +26,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
+import com.example.project1.data.local.AppDatabase
+import com.example.project1.data.local.UserRepository
 import com.example.project1.ui.theme.Project1Theme
+import kotlinx.coroutines.launch
 
 class CreateAccountPage : ComponentActivity() {
+    private lateinit var userRepository: UserRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val db = AppDatabase.getDatabase(this)
+        val userDao = db.userDao()
+        userRepository = UserRepository(userDao)
         setContent {
             Project1Theme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    CreateAccountScreen()
+                    CreateAccountScreen(
+                        onCreateAccount = { username, password ->
+                            lifecycleScope.launch {
+                                val success = userRepository.registerUser(username, password)
+                                if (success) {
+                                    Toast.makeText(this@CreateAccountPage, "Account created!", Toast.LENGTH_SHORT).show()
+                                    val intent = Intent(this@CreateAccountPage, LoginPage::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@CreateAccountPage, "Username already taken", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        },
+                        onBack = {
+                            val intent = Intent(this, LoginPage::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                    )
                 }
             }
         }
@@ -40,7 +73,7 @@ class CreateAccountPage : ComponentActivity() {
 
 // This composable function holds all the UI elements for the create account screen.
 @Composable
-private fun CreateAccountScreen() {
+private fun CreateAccountScreen(onCreateAccount: (String, String) -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -50,9 +83,9 @@ private fun CreateAccountScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Spacer(Modifier.height(48.dp))
 
         // A simple text element for the title.
         Text(
@@ -109,14 +142,7 @@ private fun CreateAccountScreen() {
                     // Show a message if any field is empty.
                     Toast.makeText(context, "Please fill out all fields", Toast.LENGTH_SHORT).show()
                 } else {
-                    // This is where we'll add the user to the database
-                    Toast.makeText(context, "Account created!", Toast.LENGTH_SHORT).show()
-
-                    // Create an Intent to navigate back to the LoginPage.
-                    val intent = Intent(context, LoginPage::class.java)
-                    context.startActivity(intent)
-                    // Finish this activity so the user can't go back to it with the back button.
-                    (context as? Activity)?.finish()
+                    onCreateAccount(username.trim(), password)
                 }
             },
             modifier = Modifier
@@ -131,10 +157,7 @@ private fun CreateAccountScreen() {
         // The secondary button to go back.
         Button(
             onClick = {
-                // Go back to login page
-                val intent = Intent(context, LoginPage::class.java)
-                context.startActivity(intent)
-                (context as? Activity)?.finish()
+                onBack()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -149,6 +172,6 @@ private fun CreateAccountScreen() {
 @Composable
 fun CreateAccountScreenPreview() {
     Project1Theme {
-        CreateAccountScreen()
+        CreateAccountScreen(onCreateAccount = { _, _ -> }, onBack = {})
     }
 }

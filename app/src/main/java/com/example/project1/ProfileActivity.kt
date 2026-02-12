@@ -1,6 +1,5 @@
 package com.example.project1
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -25,33 +24,50 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+// Added it as a class so that it can work with mainactivity / with the changes I made
+class ProfileActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            MaterialTheme {
+                Surface {
+                    ProfileScreen(
+                        onChangeUsername = { },
+                        onChangePassword = { }
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun ProfileScreen(
     onChangeUsername: () -> Unit,
     onChangePassword: () -> Unit
 ) {
-    var username by remember { mutableStateOf("") } // Input for username
-    var passwordForUsername by remember { mutableStateOf("") } // Input for password un change
-    var oldPassword by remember { mutableStateOf("") } // Input for old password
-    var newPassword1 by remember { mutableStateOf("") } // Input 1 for new password
-    var newPassword2 by remember { mutableStateOf("") } // Input 2 for new password
+    var username by remember { mutableStateOf("") }
+    var passwordForUsername by remember { mutableStateOf("") }
+    var oldPassword by remember { mutableStateOf("") }
+    var newPassword1 by remember { mutableStateOf("") }
+    var newPassword2 by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier.fillMaxSize().padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Welcome text for specific user
         Text(
             text = "Hi, username",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
-        // Text to indicate change username section
+
         Text(
             text = "Change Username",
             style = MaterialTheme.typography.bodyLarge
         )
-        // Text input for new username
+
         OutlinedTextField(
             value = username,
             onValueChange = { username = it },
@@ -59,7 +75,7 @@ fun ProfileScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        // Text input for password to change username
+
         OutlinedTextField(
             value = passwordForUsername,
             onValueChange = { passwordForUsername = it },
@@ -67,17 +83,17 @@ fun ProfileScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        // Button to change username
+
         OutlinedButton(
             onClick = onChangeUsername,
             modifier = Modifier.fillMaxWidth()
-        ) {Text("Change Username")}
-        // Text to indicate change password section
+        ) { Text("Change Username") }
+
         Text(
             text = "Change Password",
             style = MaterialTheme.typography.bodyLarge
         )
-        // Text input for old password to change password
+
         OutlinedTextField(
             value = oldPassword,
             onValueChange = { oldPassword = it },
@@ -85,7 +101,7 @@ fun ProfileScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        // Text input for new password to change password
+
         OutlinedTextField(
             value = newPassword1,
             onValueChange = { newPassword1 = it },
@@ -93,7 +109,7 @@ fun ProfileScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        // Text input to re-enter new password to change password
+
         OutlinedTextField(
             value = newPassword2,
             onValueChange = { newPassword2 = it },
@@ -101,10 +117,10 @@ fun ProfileScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
-        // Button to change username
+
         OutlinedButton(
             onClick = onChangePassword,
             modifier = Modifier.fillMaxWidth()
-        ) {Text("Change Password")}
+        ) { Text("Change Password") }
     }
 }

@@ -2,6 +2,7 @@ package com.example.project1
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,8 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.lifecycleScope
+import com.example.project1.data.local.AppDatabase
 import com.example.project1.HomePage
 import com.example.project1.ui.theme.Project1Theme
+import kotlinx.coroutines.launch
 
 /**
  * MainActivity represents the main part of the app AFTER the user logs in.
@@ -22,6 +26,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // On startup, this fetches all users from the database and prints them to the Logcat.
+        // Can be used to debug or see which users exist for testing purposes too
+        val db = AppDatabase.getDatabase(this)
+        val userDao = db.userDao()
+        lifecycleScope.launch {
+            val users = userDao.getAllUsers()
+            Log.d("DatabaseUsers", "Users in database: $users")
+        }
 
         setContent {
             Project1Theme {
@@ -46,8 +59,10 @@ class MainActivity : ComponentActivity() {
                                 currentScreen = "saved"
                             },
                             onGoProfile = {
-
-                                currentScreen = "profile"
+                                // Go back to LoginPage activity
+                                startActivity(
+                                    Intent(this@MainActivity, ProfileActivity::class.java)
+                                )
                             },
                             onLogout = {
                                 // TODO: Add real logout code later (database/auth)
