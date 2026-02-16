@@ -88,10 +88,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "profile" -> {
-                        ProfileScreen(
-                            onChangeUsername = {},
-                            onChangePassword = {}
-                        )
+                        startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 }
             }
