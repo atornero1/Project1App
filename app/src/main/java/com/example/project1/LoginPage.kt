@@ -93,7 +93,7 @@ class LoginPage : ComponentActivity() {
 }
 
 @Composable
-private fun LoginScreen(
+ fun LoginScreen(
     onLogin: (String, String) -> Unit,
     onCreateAccount: () -> Unit,
     onForgotPassword: () -> Unit
