@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -27,6 +28,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import com.example.project1.data.local.AppDatabase
+import com.example.project1.data.local.UserRepository
 
 /**
  * A small-scale, minimal-class Spoonacular "what's in my fridge" search screen.
@@ -129,6 +132,8 @@ private data class UiState(
 @Composable
 fun GenerateRecipesPage(
     apiKey: String,
+    userRepository: UserRepository,
+    userId: Int,
     modifier: Modifier = Modifier,
     numberOfResults: Int = 20,
     onBack: () -> Unit
@@ -142,6 +147,8 @@ fun GenerateRecipesPage(
     if (selected != null) {
         RecipeDetailView(
             recipe = selected,
+            userRepository = userRepository,
+            userId = userId,
             onBack = { state = state.copy(selectedRecipe = null) },
             modifier = modifier
         )
@@ -366,16 +373,45 @@ private fun RecipeCard(
 @Composable
 private fun RecipeDetailView(
     recipe: RecipeByIngredientsDto,
+    userRepository: UserRepository,
+    userId: Int,
     onBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val scope = rememberCoroutineScope() // Needed for the database "launch"
+    val context = androidx.compose.ui.platform.LocalContext.current // Needed for the Toast message
+
     Column(modifier.fillMaxSize().padding(16.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Button(onClick = onBack) { Text("Back") }
-            Spacer(Modifier.width(12.dp))
-            Text("Recipe", style = MaterialTheme.typography.titleLarge)
-        }
 
+            Spacer(Modifier.weight(1f)) // This pushes the next button to the far right
+
+            // --- NEW SAVE BUTTON ---
+            Button(
+                onClick = {
+                    scope.launch {
+                        // Create the database object using the API data
+                        val toSave = com.example.project1.data.local.SavedRecipes(
+                            id = recipe.id,
+                            userId = userId,
+                            title = recipe.title,
+                            imageUrl = recipe.image,
+                            summary = "Uses ${recipe.usedIngredientCount} ingredients"
+                        )
+
+                        // Perform the save
+                        userRepository.saveRecipe(toSave)
+
+                        // Show a quick success message
+                        android.widget.Toast.makeText(context, "Recipe Saved!", android.widget.Toast.LENGTH_SHORT).show()
+                    }
+                }
+            ) {
+                Text("Save")
+            }
+        }
         Spacer(Modifier.height(12.dp))
 
         AsyncImage(
@@ -496,7 +532,10 @@ private fun SpoonacularRecipeSearchScreen_Preview() {
         Column(Modifier.padding(16.dp)) {
             RecipeCard(recipe = sample, onOpen = {})
             Spacer(Modifier.height(16.dp))
-            RecipeDetailView(recipe = sample, onBack = {})
+            RecipeDetailView(recipe = sample, onBack = {},
+                userRepository = UserRepository(AppDatabase.getDatabase(LocalContext.current).userDao()),
+                userId = 1
+            )
         }
     }
 }
@@ -529,7 +568,11 @@ private fun GenerateRecipesPage_Preview() {
         Column(Modifier.padding(16.dp)) {
             RecipeCard(recipe = sample, onOpen = {})
             Spacer(Modifier.height(16.dp))
-            RecipeDetailView(recipe = sample, onBack = {})
+            RecipeDetailView(recipe = sample, onBack = {},
+                // Add these two lines so the preview stops complaining:
+                userRepository = UserRepository(AppDatabase.getDatabase(LocalContext.current).userDao()),
+                userId = 1
+            )
         }
     }
 }

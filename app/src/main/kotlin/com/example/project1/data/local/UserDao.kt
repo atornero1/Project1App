@@ -21,4 +21,13 @@ interface UserDao {
 
     @Query("SELECT * FROM users")
     suspend fun getAllUsers(): List<User>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveRecipe(recipe: SavedRecipes)
+
+    @Query("SELECT * FROM saved_recipes WHERE userId = :userId")
+    suspend fun getRecipesForUser(userId: Int): List<SavedRecipes>
+
+    @Query("DELETE FROM saved_recipes WHERE id = :recipeId")
+    suspend fun deleteRecipe(recipeId: Int)
 }

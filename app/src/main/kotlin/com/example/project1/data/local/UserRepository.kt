@@ -16,6 +16,18 @@ class UserRepository(private val userDao: UserDao) {
         return null
     }
 
+    suspend fun saveRecipe(recipe: SavedRecipes) {
+        userDao.saveRecipe(recipe)
+    }
+
+    suspend fun getSavedRecipes(userId: Int): List<SavedRecipes> {
+        return userDao.getRecipesForUser(userId)
+    }
+
+    suspend fun removeRecipe(recipeId: Int) {
+        userDao.deleteRecipe(recipeId)
+    }
+
     suspend fun deleteUser(username: String): Boolean {
         return userDao.deleteByUsername(username) > 0
     }
