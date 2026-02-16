@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface UserDao {
@@ -20,18 +19,15 @@ interface UserDao {
     @Query("UPDATE users SET password = :newPassword WHERE username = :username")
     suspend fun updatePassword(username: String, newPassword: String): Int
 
-    @Query("UPDATE users SET username = :newUsername WHERE username = :username")
-    suspend fun updateUsername(username: String, newUsername: String): Int
-
     @Query("SELECT * FROM users")
     suspend fun getAllUsers(): List<User>
 
-    @Query("SELECT * FROM users WHERE isLoggedIn = 1 LIMIT 1")
-    fun getLoggedInUser(): Flow<User?>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun saveRecipe(recipe: SavedRecipes)
 
-    @Query("UPDATE users SET isLoggedIn = 0")
-    suspend fun logoutAllUsers()
+    @Query("SELECT * FROM saved_recipes WHERE userId = :userId")
+    suspend fun getRecipesForUser(userId: Int): List<SavedRecipes>
 
-    @Query("UPDATE users SET isLoggedIn = 1 WHERE username = :username")
-    suspend fun setLoggedIn(username: String)
+    @Query("DELETE FROM saved_recipes WHERE id = :recipeId")
+    suspend fun deleteRecipe(recipeId: Int)
 }

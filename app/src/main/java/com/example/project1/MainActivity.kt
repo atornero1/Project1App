@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.lifecycleScope
 import com.example.project1.data.local.AppDatabase
+import com.example.project1.data.local.UserRepository
 import com.example.project1.ui.theme.Project1Theme
 import kotlinx.coroutines.launch
 
@@ -29,6 +30,8 @@ class MainActivity : ComponentActivity() {
         // On startup, this fetches all users from the database and prints them to the Logcat.
         // Can be used to debug or see which users exist for testing purposes too
         val db = AppDatabase.getDatabase(this)
+        val repository = UserRepository(db.userDao())
+        val currentUserId = intent.getIntExtra("USER_ID", -1)
         val userDao = db.userDao()
         lifecycleScope.launch {
             val users = userDao.getAllUsers()
@@ -78,6 +81,8 @@ class MainActivity : ComponentActivity() {
                             onBack = { currentScreen = "home" },
                             apiKey = "6dcaf962a3614a588fbadc15730ab3cd",
                             modifier = Modifier.fillMaxSize(),
+                            userRepository = repository, // Passing it here
+                            userId = currentUserId,      // Passing it here
                             numberOfResults = 15
                         )
                     }
