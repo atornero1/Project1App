@@ -52,7 +52,7 @@ class LoginPage : ComponentActivity() {
         // On first launch, this will create a default "admin" user for testing.
         // If the user already exists, it will be ignored, making it safe to run every time.
         lifecycleScope.launch {
-            userRepository.registerUser("admin", "admin")
+            userRepository.registerUser("admin", "password")
         }
 
         setContent {
@@ -66,8 +66,13 @@ class LoginPage : ComponentActivity() {
                         lifecycleScope.launch {
                             val user = userRepository.login(username, password)
                             if (user != null) {
+                                val intent = Intent(this@LoginPage, MainActivity::class.java)
+
+                                // Adds the User ID to the Intent so MainActivity can read it
+                                intent.putExtra("USER_ID", user.id)
+
                                 // Go to MainActivity
-                                startActivity(Intent(this@LoginPage, MainActivity::class.java))
+                                startActivity(intent)
                                 finish()
                             } else {
                                 Toast.makeText(
