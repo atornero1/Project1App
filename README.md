@@ -26,8 +26,8 @@ Styling guide was used [here](https://docs.github.com/en/get-started/writing-on-
 Introduction
 ---
 * How was communication managed : Katie facilitated most of the communication
-* How many stories/issues were initially considered : 26
-* How many stories/issues were completed : 25
+* How many stories/issues were initially considered : 29
+* How many stories/issues were completed : 28
 
 Team Retrospective
 ---
