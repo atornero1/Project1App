@@ -89,7 +89,11 @@ class MainActivity : ComponentActivity() {
 
 
                     "saved" -> {
-                        SimpleScreenText("Saved Recipes Page (Coming Soon)")
+                        SavedRecipesPage(
+                            userRepository = repository,
+                            userId = currentUserId,
+                            onBack = { currentScreen = "home" }
+                        )
                     }
 
                     "profile" -> {
