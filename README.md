@@ -76,21 +76,27 @@ Description of that here -> Organized what the app would layout would be and how
 * What is the most valuable thing you learned?
    - What the process of making an app isn't
 
-**Team Member Name - replace with name**
+**Ivan Martinez**
 
-1. (Name)'s pull requests are [here]
-2. (Name)'s Github issues are [here]
+1. Ivans's pull requests are [here](https://github.com/atornero1/Project1App/pulls?q=is%3Apr+is%3Aclosed+author%3AIvanssM)
+2. Ivan's Github issues are [here](https://github.com/atornero1/Project1App/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3AIvanssM)
 
 **What was your role / which stories did you work on**
 
-Description of that here ->
+Description of that here -> I created the home page and handled the main activity of the app by creating navigation buttons for different pages. I also handled implementing the Spoonacular API to retrieve recipes and display that information on the generate recipes page.
 
-* What was the biggest challenge? 
+* What was the biggest challenge?
+- Having to create everything in Kotlin meanwhile implementing an API.
 * Why was it a challenge?
+- It was the first time I had to work with either.
 * How was the challenge addressed?
+- I had AI help turn the UI to Composable (since it was allowed) and I created python scripts to test API calls.
 * Favorite / most interesting part of this project
+- Tinkering with the API to retrieve data from it
 * If you could do it over, what would you change?
+- Start off with solidifying the program concept idea so we don't have to spend time on the wrong tasks.
 * What is the most valuable thing you learned?
+- Communication and github is very immportant when working with teams
 
 **Team Member Name - replace with name**
 
