@@ -24,8 +24,8 @@ class UserRepository(private val userDao: UserDao) {
         userDao.saveRecipe(recipe)
     }
 
-    suspend fun getSavedRecipes(userId: Int): List<SavedRecipes> {
-        return userDao.getRecipesForUser(userId)
+    fun getSavedRecipes(userId: Int): Flow<List<SavedRecipes>> {
+        return userDao.getSavedRecipes(userId)
     }
 
     suspend fun removeRecipe(recipeId: Int) {

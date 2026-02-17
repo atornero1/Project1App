@@ -38,8 +38,7 @@ interface UserDao {
     suspend fun saveRecipe(recipe: SavedRecipes)
 
     @Query("SELECT * FROM saved_recipes WHERE userId = :userId")
-    suspend fun getRecipesForUser(userId: Int): List<SavedRecipes>
-
+    fun getSavedRecipes(userId: Int): kotlinx.coroutines.flow.Flow<List<SavedRecipes>>
     @Query("DELETE FROM saved_recipes WHERE id = :recipeId")
     suspend fun deleteRecipe(recipeId: Int)
 }
