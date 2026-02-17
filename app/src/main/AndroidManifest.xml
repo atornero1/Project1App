@@ -20,6 +20,12 @@
             android:name=".CreateAccountPage"
             android:exported="false" />
 
+        <!-- Profile screen -->
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:label="User Profile" />
+
         <!-- Login screen – FIRST screen (launcher) -->
         <activity
             android:name=".LoginPage"
@@ -40,12 +46,6 @@
             android:exported="false"
             android:label="@string/app_name"
             android:theme="@style/Theme.Project1" />
-
-        <!-- Profile Activity -->
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="false"
-            android:label="User Profile" />
 
     </application>
 

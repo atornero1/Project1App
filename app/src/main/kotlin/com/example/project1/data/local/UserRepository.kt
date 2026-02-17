@@ -13,6 +13,8 @@ class UserRepository(private val userDao: UserDao) {
     suspend fun login(username: String, password: String): User? {
         val user = userDao.getByUsername(username)
         if (user != null && user.password == password) {
+            userDao.logoutAllUsers()
+            userDao.setLoggedIn(username)
             return user
         }
         return null
@@ -32,5 +34,9 @@ class UserRepository(private val userDao: UserDao) {
 
     suspend fun deleteUser(username: String): Boolean {
         return userDao.deleteByUsername(username) > 0
+    }
+
+    fun getLoggedInUser(): Flow<User?> {
+        return userDao.getLoggedInUser()
     }
 }
