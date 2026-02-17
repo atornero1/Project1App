@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
         // Can be used to debug or see which users exist for testing purposes too
         val db = AppDatabase.getDatabase(this)
         val repository = UserRepository(db.userDao())
-        val currentUserId = intent.getIntExtra("USER_ID", -1)
+
         val userDao = db.userDao()
         lifecycleScope.launch {
             val users = userDao.getAllUsers()
@@ -39,6 +39,11 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
+            val loggedInUser by repository
+                .getLoggedInUser()
+                .collectAsState(initial = null)
+            val currentUserId = loggedInUser?.id ?: -1
+
             Project1Theme {
 
                 /*
@@ -93,10 +98,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "profile" -> {
-                        ProfileScreen(
-                            onChangeUsername = {},
-                            onChangePassword = {}
-                        )
+                        startActivity(Intent(this, ProfileActivity::class.java))
                     }
                 }
             }

@@ -68,9 +68,6 @@ class LoginPage : ComponentActivity() {
                             if (user != null) {
                                 val intent = Intent(this@LoginPage, MainActivity::class.java)
 
-                                // Adds the User ID to the Intent so MainActivity can read it
-                                intent.putExtra("USER_ID", user.id)
-
                                 // Go to MainActivity
                                 startActivity(intent)
                                 finish()
