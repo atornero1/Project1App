@@ -13,9 +13,9 @@ Styling guide was used [here](https://docs.github.com/en/get-started/writing-on-
 
 Introduction
 ---
-* How was communication managed
-* How many stories/issues were initially considered
-* How many stories/issues were completed
+* How was communication managed : Katie facilitated most of the communication
+* How many stories/issues were initially considered : 26
+* How many stories/issues were completed : 25
 
 Team Retrospective
 ---
@@ -36,21 +36,21 @@ Description of that here ->
 * If you could do it over, what would you change?
 * What is the most valuable thing you learned?
 
-**Team Member Name - replace with name**
+**Katie Smith**
 
-1. (Name)'s pull requests are [here]
-2. (Name)'s Github issues are [here]
+1. Katie's pull requests are [here](https://github.com/atornero1/Project1App/pulls?q=is%3Apr+author%3Akati3smi+is%3Aclosed)
+2. Katie's Github issues are [here](https://github.com/atornero1/Project1App/issues?q=is%3Aissue%20state%3Aclosed%20author%3Akati3smi)
 
-**What was your role / which stories did you work on**
+**Coordinator**
 
-Description of that here ->
+Description of that here -> Organized what the app would layout would be and how it would function
 
-* What was the biggest challenge? 
-* Why was it a challenge?
-* How was the challenge addressed?
-* Favorite / most interesting part of this project
-* If you could do it over, what would you change?
-* What is the most valuable thing you learned?
+* What was the biggest challenge? : Not really understanding how API works beyond the surface level
+* Why was it a challenge? : Because I wasn't fully able to plan how the API would work
+* How was the challenge addressed? : We left the plan for generation page abstract and Ivan figured it out
+* Favorite / most interesting part of this project : Figuring out composable ui
+* If you could do it over, what would you change? : I would start planning sooner, but leave the planning more abstract and focus on learning material
+* What is the most valuable thing you learned? : What the process of making an app isn't
 
 **Team Member Name - replace with name**
 
@@ -88,7 +88,7 @@ Description of that here ->
 Conclusion
 ---
 
-* How successful was the project?
+* How successful was the project? : The app was mostly successful, we got almost all of the features we wanted implemented and we met all of the requirements
   - Think in terms of what did you set out to do and what actually got done?
-* What was the largest victory?
-* Final assessment of the project
+* What was the largest victory? : Seeing Ivan's pr for the whole generating page when he agreed to just set up the API
+* Final assessment of the project : Improvements will be made in the future but everything worked out
