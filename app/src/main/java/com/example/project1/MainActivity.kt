@@ -66,8 +66,7 @@ class MainActivity : ComponentActivity() {
                                 currentScreen = "saved"
                             },
                             onGoProfile = {
-                                currentScreen = "profile"
-                            },
+                                startActivity(Intent(this@MainActivity, ProfileActivity::class.java))                            },
                             onLogout = {
                                 // TODO: Add real logout code later (database/auth)
 
@@ -102,8 +101,8 @@ class MainActivity : ComponentActivity() {
                     }
 
                     "profile" -> {
-                        startActivity(Intent(this, ProfileActivity::class.java))
-                    }
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            Text("Opening Profile...")                    }
                 }
             }
         }
@@ -121,4 +120,5 @@ fun SimpleScreenText(title: String) {
     ) {
         Text(text = title)
     }
+}
 }
