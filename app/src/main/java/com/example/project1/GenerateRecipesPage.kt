@@ -30,6 +30,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import com.example.project1.data.local.AppDatabase
 import com.example.project1.data.local.UserRepository
+import androidx.compose.ui.platform.testTag
+
 
 /**
  * A small-scale, minimal-class Spoonacular "what's in my fridge" search screen.
@@ -189,12 +191,16 @@ fun GenerateRecipesPage(
                 OutlinedTextField(
                     value = state.ingredientText,
                     onValueChange = { state = state.copy(ingredientText = it) },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag("ingredientField"),
                     label = { Text("Ingredient") },
                     singleLine = true
                 )
                 Spacer(Modifier.width(8.dp))
-                Button(onClick = {
+                Button(
+                    modifier = Modifier.testTag("addButton"),
+                    onClick = {
                     val next = state.ingredientText.trim()
                     if (next.isNotBlank()) {
                         // Keep distinct (case-insensitive) to avoid duplicates like "Eggs" and "eggs"
@@ -221,6 +227,7 @@ fun GenerateRecipesPage(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Button(
+                    modifier = Modifier.testTag("searchButton"),
                     enabled = state.ingredients.isNotEmpty() && !state.isLoading,
                     onClick = {
                         // Start loading
