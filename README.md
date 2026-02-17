@@ -1,7 +1,19 @@
+FoodApp
+===
+
+An Android app that allows users to discover recipes based on available ingredients.
+
+How to use FoodApp
+===
+* Create a personalized account or sign in from the home page.
+* Input your available ingredients to fetch real-time recipe suggestions.
+* Save your favorite recipes to your private collection.
+* Update your profile or manage your saved list.
+
 Project 01 Retrospective and Overview
 ===
 
-Video Link (to be added)
+[Video Link](https://drive.google.com/file/d/1Q9RW3xANpuqaIQFzu0EAJaUfFwCbeuUF/view?resourcekey)
 
 [Github Repo](https://github.com/atornero1/Project1App)
 
@@ -27,14 +39,20 @@ Team Retrospective
 
 **What was your role / which stories did you work on**
 
-Description of that here ->
+Description of that here -> I created the database and ensured that when creating users, they were logged into the database correctly, and that saving recipes was reflected in the database and linked to the currently logged-in user.
 
-* What was the biggest challenge? 
+* What was the biggest challenge?
+    - The biggest challenge for me was learning about all these new terms and ways to navigate Android Studio, whether it was creating the ViewModels for the pages or actually making sure the database was correctly taking in users.
 * Why was it a challenge?
+    - This was a challenge due to a lack of experience and not knowing how to approach it.
 * How was the challenge addressed?
+    - I approached the challenge by watching YouTube videos on it or simply watching official Android Studio guides, which made it easier to understand.
 * Favorite / most interesting part of this project
+    - My favorite part of this project was actually seeing my progress reflected on the application and seeing how little by little we were creating a functional application.
 * If you could do it over, what would you change?
+    - I would communicate more often with my team and be clearer and more specific about what I was working on. I would also tackle my approach to Android Studio much earlier, as I underestimated how long it would take me to understand things.
 * What is the most valuable thing you learned?
+    - The most valuable thing I learned was how to better communicate with our team, as it proved to be vital. As we progressed with our project, our team chemistry improved, and it was reflected in our project.
 
 **Katie Smith**
 
@@ -45,12 +63,18 @@ Description of that here ->
 
 Description of that here -> Organized what the app would layout would be and how it would function
 
-* What was the biggest challenge? : Not really understanding how API works beyond the surface level
-* Why was it a challenge? : Because I wasn't fully able to plan how the API would work
-* How was the challenge addressed? : We left the plan for generation page abstract and Ivan figured it out
-* Favorite / most interesting part of this project : Figuring out composable ui
-* If you could do it over, what would you change? : I would start planning sooner, but leave the planning more abstract and focus on learning material
-* What is the most valuable thing you learned? : What the process of making an app isn't
+* What was the biggest challenge?
+   - Not really understanding how API works beyond the surface level
+* Why was it a challenge?
+   - Because I wasn't fully able to plan how the API would work
+* How was the challenge addressed?
+   - We left the plan for generation page abstract and Ivan figured it out
+* Favorite / most interesting part of this project
+   - Figuring out composable ui
+* If you could do it over, what would you change?
+   - I would start planning sooner, but leave the planning more abstract and focus on learning material
+* What is the most valuable thing you learned?
+   - What the process of making an app isn't
 
 **Team Member Name - replace with name**
 
